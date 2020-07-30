@@ -7,6 +7,7 @@
   "description": "Next.js plugin to transpile code from node_modules (supports TypeScript)",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:lint": "eslint .",
     "test:formatting": "prettier --check \"**/*.js\"",
     "test:formatting:fix": "prettier --check \"**/*.js\" --write",

@@ -1,8 +1,12 @@
-describe.each([
-  ['npm', 3500], // name of the test, port
-  ['yarn-worspaces', 3501],
-  ['webpack-5', 3502]
-])('%s integration', (name, port) => {
+const fs = require('fs');
+
+const matrix = [
+  ['npm-basic', './src/__tests__/__apps__/npm-basic', 3500], // name of the test, port
+  ['yarn-worspaces', './src/__tests__/__apps__/yarn-workspaces/app', 3501],
+  ['webpack-5', './src/__tests__/__apps__/webpack-5', 3502]
+];
+
+describe.each(matrix)('%s integration', (name, path, port) => {
   const BASE_URL = `http://localhost:${port}`;
 
   describe('homepage access', () => {
@@ -97,4 +101,36 @@ describe.each([
       expect(className.includes('Input_input__')).toBe(true);
     });
   });
+
+  if (name === 'npm-basic') {
+    describe('hot reloading', () => {
+      test('changes should be applied when adding content to transpiled modules files', async () => {
+        const page = await browser.newPage();
+        await page.goto(`${BASE_URL}/test-local-typescript-module`);
+
+        const content = await page.$eval('h1', (e) => e.textContent);
+        expect(content).toBe('The answer is 43');
+
+        await fs.promises.writeFile(
+          `${path}/../_shared-ts/utils/calc.ts`,
+          `export const add = (a: number, b: number) => a + b + a + b;\nexport const substract = (a: number, b: number) => a - b;`
+        );
+
+        await page.waitFor(4000);
+
+        // await page.waitFor(5000);
+
+        // FIXME: will not work because we run the app in production mode
+        const content2 = await page.$eval('h1', (e) => e.textContent);
+        expect(content2).toBe('The answer is 86');
+      });
+
+      afterAll(async () => {
+        await fs.promises.writeFile(
+          `${path}/../_shared-ts/utils/calc.ts`,
+          `export const add = (a: number, b: number) => a + b;\nexport const substract = (a: number, b: number) => a - b;`
+        );
+      });
+    });
+  }
 });
