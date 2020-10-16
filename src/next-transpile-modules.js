@@ -1,5 +1,5 @@
 const path = require('path');
-
+const package = require('../../../../package-lock.json');
 const PATH_DELIMITER = '[\\\\/]'; // match 2 antislashes or one slash
 
 // Use me when needed
@@ -70,7 +70,7 @@ const withTmInitializer = (transpileModules = [], options = {}) => {
 
     const resolveSymlinks = options.resolveSymlinks || false;
     const isWebpack5 = options.unstable_webpack5 || false;
-    const transpileRequiredModules = transpileModules
+    const transpileRequiredModules = findDependencies(package, transpileModules, transpileModules)
     const includes = generateIncludes(transpileRequiredModules);
     const excludes = generateExcludes(transpileRequiredModules);
     const hasInclude = (ctx, req) => {
