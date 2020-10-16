@@ -1,10 +1,10 @@
 {
   "private": false,
   "name": "@1amageek/next-transpile-modules",
-  "version": "4.1.0",
+  "version": "0.0.1",
   "main": "src/next-transpile-modules.js",
   "license": "MIT",
-  "author": "Pierre de la Martinière <pierre.de.la.martiniere@gmail.com>",
+	"author": "1amageek",
   "description": "Next.js plugin to transpile code from node_modules (supports TypeScript)",
   "scripts": {
     "test": "jest",
