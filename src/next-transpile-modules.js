@@ -36,6 +36,25 @@ const generateExcludes = (modules) => {
   ];
 };
 
+const findDependencies = (package, modules, contains) => {
+	return modules.reduce((prev, name) => {
+		const module = package.dependencies[name];
+		if (module) {
+			if (Object.keys(module).indexOf("requires") !== -1) {
+				const requires = module["requires"];
+				const requireModules = Object.keys(requires).filter(module => !prev.includes(module));
+				let requiredDependecies = [...new Set(requireModules.concat(prev))];
+				if (requireModules.length > 0) {
+					const dependencies = findDependencies(package, requireModules, requiredDependecies);
+					requiredDependecies = [...new Set(requiredDependecies.concat(dependencies))];
+				}
+				return requiredDependecies;
+			}
+		}
+		return prev;
+	}, contains)
+};
+
 /**
  * On Windows, the Regex won't match as Webpack tries to resolve the
  * paths of the modules. So we need to check for \\ and /
@@ -51,9 +70,9 @@ const withTmInitializer = (transpileModules = [], options = {}) => {
 
     const resolveSymlinks = options.resolveSymlinks || false;
     const isWebpack5 = options.unstable_webpack5 || false;
-
-    const includes = generateIncludes(transpileModules);
-    const excludes = generateExcludes(transpileModules);
+    const transpileRequiredModules = transpileModules
+    const includes = generateIncludes(transpileRequiredModules);
+    const excludes = generateExcludes(transpileRequiredModules);
     const hasInclude = (ctx, req) => {
       return includes.find((include) =>
         req.startsWith('.') ? include.test(path.resolve(ctx, req)) : include.test(req)
