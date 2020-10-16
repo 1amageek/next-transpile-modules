@@ -1,5 +1,5 @@
 {
-  "name": "next-transpile-modules",
+  "name": "@1amageek/next-transpile-modules",
   "version": "4.1.0",
   "main": "src/next-transpile-modules.js",
   "license": "MIT",
@@ -20,12 +20,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/martpie/next-transpile-modules.git"
+    "url": "git+https://github.com/1amageek/next-transpile-modules.git"
   },
   "bugs": {
-    "url": "https://github.com/martpie/next-transpile-modules/issues"
+    "url": "https://github.com/1amageek/next-transpile-modules/issues"
   },
-  "homepage": "https://github.com/martpie/next-transpile-modules#readme",
+  "homepage": "https://github.com/1amageek/next-transpile-modules#readme",
   "keywords": [
     "next",
     "next.js",
