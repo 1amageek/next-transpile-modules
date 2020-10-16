@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@1amageek/next-transpile-modules",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "src/next-transpile-modules.js",
   "license": "MIT",
 	"author": "1amageek",
